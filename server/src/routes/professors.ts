@@ -25,7 +25,6 @@ router.get("", async (req: Request, res: Response) => {
       .sort({ createdAt: -1 })
       .exec();
 
-    // count the number of documents
     const count = await ProfessorModel.find(docQuery).countDocuments();
 
     return res.status(200).json({
@@ -48,15 +47,22 @@ router.get("", async (req: Request, res: Response) => {
 const professorSchema = z.object({
   name: z.string(),
   hourlyRate: z.number().int().min(2500).max(7500),
-  hours: z.number().int().min(160).max(200),
+  hours: z.number().int().min(0),
 });
 
 router.post("", async (req, res) => {
   try {
-    const professor = professorSchema.parse(req.body);
+    const result = professorSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Invalid data",
+        error: result.error,
+      });
+    }
 
     const newProfessor = await ProfessorModel.create({
-      ...professor,
+      ...result.data,
       code: `prof_${(await ProfessorModel.countDocuments()) + 1}`,
     });
 
@@ -65,7 +71,7 @@ router.post("", async (req, res) => {
       data: newProfessor,
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       message: "An error occurred",
       error,
     });

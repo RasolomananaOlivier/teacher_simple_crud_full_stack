@@ -5,12 +5,16 @@ const Client = Axios.create({
   baseURL: "http://localhost:3000/api/v1",
 });
 
-type GetProfessorsParams = {
+/**
+ * This is the API call to get all professors
+ *
+ */
+export type GetProfessorsParams = {
   page?: number;
 };
-type GetProfessorsResponse = {
+export type GetResponse<T> = {
   message: string;
-  data: IProfessor[];
+  data: T;
   meta: {
     limit: number;
     page: number;
@@ -20,11 +24,26 @@ type GetProfessorsResponse = {
 export const getProfessors = async ({ page = 1 }: GetProfessorsParams) => {
   const response = await Client.get(`/professors?page=${page}`);
 
-  return response.data as GetProfessorsResponse;
+  return response.data as GetResponse<IProfessor[]>;
 };
 
-export const postProfessor = async () => {
-  // TODO
+/**
+ * This is the API call to create a professor
+ *
+ */
+export type PostProfessorParams = {
+  name: string;
+  hourlyRate: number;
+  hours: number;
+};
+export type PostResponse<T> = {
+  message: string;
+  data: T;
+};
+export const postProfessor = async (params: PostProfessorParams) => {
+  const response = await Client.post("/professors", params);
+
+  return response.data as PostResponse<IProfessor>;
 };
 
 export const deleteProfessor = async () => {
