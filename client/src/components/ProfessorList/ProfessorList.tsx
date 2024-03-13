@@ -11,6 +11,7 @@ import ProfessorItem from "./ProfessorItem";
 import { useQuery } from "@tanstack/react-query";
 import { getProfessors } from "../../apis";
 import { useState } from "react";
+import SalaryOverview from "../SalaryOverview";
 
 export default function ProfessorList() {
   const [page, setPage] = useState(1);
@@ -35,7 +36,7 @@ export default function ProfessorList() {
     <Box mb="xl">
       <Stack gap="md" pb="xl" mt="xl">
         <Grid px="md">
-          <Grid.Col span={2}>
+          <Grid.Col span={1}>
             <Title order={4}>Numéro</Title>
           </Grid.Col>
 
@@ -47,11 +48,15 @@ export default function ProfessorList() {
             <Title order={4}>Taux horaire</Title>
           </Grid.Col>
 
-          <Grid.Col span={2.5}>
+          <Grid.Col span={2}>
             <Title order={4}>Nombre d'heures</Title>
           </Grid.Col>
 
-          <Grid.Col span={2.5}>
+          <Grid.Col span={2}>
+            <Title order={4}>Salaire</Title>
+          </Grid.Col>
+
+          <Grid.Col span={2}>
             <Title order={4}>Actions</Title>
           </Grid.Col>
         </Grid>
@@ -64,6 +69,12 @@ export default function ProfessorList() {
         color="indigo"
         onChange={setPage}
         value={page}
+      />
+
+      <SalaryOverview
+        total={data?.meta.totalSaleries!}
+        min={data?.meta.min!}
+        max={data?.meta.max!}
       />
     </Box>
   );

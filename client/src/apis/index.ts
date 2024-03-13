@@ -19,6 +19,9 @@ export type GetResponse<T> = {
     limit: number;
     page: number;
     total: number;
+    max: number;
+    min: number;
+    totalSaleries: number;
   };
 };
 export const getProfessors = async ({ page = 1 }: GetProfessorsParams) => {
@@ -46,10 +49,23 @@ export const postProfessor = async (params: PostProfessorParams) => {
   return response.data as PostResponse<IProfessor>;
 };
 
-export const deleteProfessor = async () => {
-  // TODO
+export type DeleteProfessorParams = {
+  id: string;
+};
+export const deleteProfessor = async (params: DeleteProfessorParams) => {
+  const response = await Client.delete(`/professors/${params.id}`);
+
+  return response.data;
 };
 
-export const updateProfessor = async () => {
-  // TODO
+export type UpdateProfessorParams = {
+  id: string;
+  name?: string;
+  hourlyRate?: number;
+  hours?: number;
+};
+export const updateProfessor = async (params: UpdateProfessorParams) => {
+  const response = await Client.put(`/professors/${params.id}`, params);
+
+  return response.data;
 };

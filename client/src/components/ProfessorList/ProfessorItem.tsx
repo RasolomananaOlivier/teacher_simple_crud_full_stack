@@ -20,12 +20,20 @@ export default function ProfessorItem({ professor }: Props) {
 
   return (
     <>
-      <ConfirmDeleteModal opened={deleteModalOpened} close={closeDeleteModal} />
-      <UpdateProfessorModal opened={editModalOpened} close={closeEditModal} />
+      <ConfirmDeleteModal
+        professorId={professor._id!}
+        opened={deleteModalOpened}
+        close={closeDeleteModal}
+      />
+      <UpdateProfessorModal
+        professor={professor}
+        opened={editModalOpened}
+        close={closeEditModal}
+      />
 
       <Card shadow="sm" radius="md">
         <Grid>
-          <Grid.Col span={2}>
+          <Grid.Col span={1}>
             <Text>{professor.code}</Text>
           </Grid.Col>
 
@@ -34,14 +42,18 @@ export default function ProfessorItem({ professor }: Props) {
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Text>{professor.hourlyRate}</Text>
+            <Text>{professor.hourlyRate} Ar</Text>
           </Grid.Col>
 
-          <Grid.Col span={2.5}>
+          <Grid.Col span={2}>
             <Text>{professor.hours}</Text>
           </Grid.Col>
 
-          <Grid.Col span={2.5}>
+          <Grid.Col span={2}>
+            <Text>{professor.hours * professor.hourlyRate} Ar</Text>
+          </Grid.Col>
+
+          <Grid.Col span={2}>
             <Flex gap="xs">
               <ActionIcon
                 variant="filled"

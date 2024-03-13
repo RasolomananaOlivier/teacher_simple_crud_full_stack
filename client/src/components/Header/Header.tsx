@@ -1,4 +1,4 @@
-import { Menu, Group, Center, Burger, Container, Text } from "@mantine/core";
+import { Group, Burger, Container, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
 import { Link } from "react-router-dom";
@@ -20,7 +20,17 @@ export default function Header() {
     <header className={classes.header}>
       <Container size="md">
         <div className={classes.inner}>
-          <Text fw={700}>Gestion d'enseignants</Text>
+          <Text fw={700}>
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: "black",
+              }}
+            >
+              Gestion d'enseignants
+            </Link>
+          </Text>
           <Group gap={5} visibleFrom="sm">
             {items}
           </Group>

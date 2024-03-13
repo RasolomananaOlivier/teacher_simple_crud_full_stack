@@ -27,6 +27,9 @@ router.get("", async (req: Request, res: Response) => {
 
     const count = await ProfessorModel.find(docQuery).countDocuments();
 
+    const profs = await ProfessorModel.find().exec();
+    const salaries = profs.map((prof) => prof.hourlyRate * prof.hours);
+
     return res.status(200).json({
       message: "Successfully retrieved professors",
       data: professors,
@@ -34,6 +37,9 @@ router.get("", async (req: Request, res: Response) => {
         limit,
         page,
         total: Math.ceil(count / limit),
+        max: Math.max(...salaries),
+        min: Math.min(...salaries),
+        totalSaleries: salaries.reduce((acc, curr) => acc + curr, 0),
       },
     });
   } catch (error) {
@@ -61,9 +67,17 @@ router.post("", async (req, res) => {
       });
     }
 
+    // Get the last professor
+    const lastProfessor = await ProfessorModel.findOne()
+      .sort({ createdAt: -1 })
+      .exec();
+    const lastProfCodeNumber = lastProfessor
+      ? parseInt(lastProfessor.code.split("_")[1])
+      : 0;
+
     const newProfessor = await ProfessorModel.create({
       ...result.data,
-      code: `prof_${(await ProfessorModel.countDocuments()) + 1}`,
+      code: `en_${lastProfCodeNumber + 1}`,
     });
 
     return res.status(201).json({
@@ -99,17 +113,24 @@ router.get("/:id", async (req, res) => {
 const updateProfessorSchema = z.object({
   name: z.string().optional(),
   hourlyRate: z.number().int().min(2500).max(7500).optional(),
-  hours: z.number().int().min(160).max(200).optional(),
+  hours: z.number().int().optional(),
 });
 
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const professor = updateProfessorSchema.parse(req.body);
+    const result = updateProfessorSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: "Invalid data",
+        error: result.error,
+      });
+    }
 
     const updatedProfessor = await ProfessorModel.findByIdAndUpdate(
       id,
-      professor,
+      result.data,
       {
         new: true,
       }
