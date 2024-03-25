@@ -37,27 +37,27 @@ export default function ProfessorList() {
       <Stack gap="md" pb="xl" mt="xl">
         <Grid px="md">
           <Grid.Col span={1}>
-            <Title order={4}>Numéro</Title>
+            <Title order={5}>Numéro</Title>
           </Grid.Col>
 
           <Grid.Col span={3}>
-            <Title order={4}>Nom</Title>
+            <Title order={5}>Nom</Title>
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Title order={4}>Taux horaire</Title>
+            <Title order={5}>Taux horaire (Ar)</Title>
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Title order={4}>Nombre d'heures</Title>
+            <Title order={5}>Nombre d'heures</Title>
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Title order={4}>Salaire</Title>
+            <Title order={5}>Salaire (Ar)</Title>
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Title order={4}>Actions</Title>
+            <Title order={5}>Actions</Title>
           </Grid.Col>
         </Grid>
         {professors?.map((professor) => (

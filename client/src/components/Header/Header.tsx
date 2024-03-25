@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
 import { Link } from "react-router-dom";
 
-const links = [{ link: "/about", label: "About" }];
+const links = [{ link: "/about", label: "A propos" }];
 
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);

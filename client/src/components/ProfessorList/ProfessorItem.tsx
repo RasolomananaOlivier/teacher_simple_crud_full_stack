@@ -4,6 +4,7 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import UpdateProfessorModal from "../UpdateProfessorModal";
 import { IProfessor } from "../../types";
+import { formatCurrency } from "../../utils";
 
 type Props = {
   professor: IProfessor;
@@ -42,7 +43,7 @@ export default function ProfessorItem({ professor }: Props) {
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Text>{professor.hourlyRate} Ar</Text>
+            <Text>{formatCurrency(professor.hourlyRate)}</Text>
           </Grid.Col>
 
           <Grid.Col span={2}>
@@ -50,7 +51,9 @@ export default function ProfessorItem({ professor }: Props) {
           </Grid.Col>
 
           <Grid.Col span={2}>
-            <Text>{professor.hours * professor.hourlyRate} Ar</Text>
+            <Text>
+              {formatCurrency(professor.hours * professor.hourlyRate)}
+            </Text>
           </Grid.Col>
 
           <Grid.Col span={2}>
